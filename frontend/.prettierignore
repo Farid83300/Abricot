@@ -1,0 +1,8 @@
+node_modules
+.next
+out
+build
+coverage
+yarn.lock
+*.min.js
+*.min.css
