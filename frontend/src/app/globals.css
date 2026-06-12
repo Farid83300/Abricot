@@ -1,23 +1,36 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Couleurs de marque Abricot */
+  --color-primary: #d3590b;
+  --color-primary-hover: #b84a08;
+  --color-ink: #0f0f0f;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Fond et surfaces (observés sur les maquettes : gris très clair) */
+  --color-background: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+
+  /* Texte */
+  --color-text-primary: #0f0f0f;
+  --color-text-secondary: #6b7280;
+  --color-text-placeholder: #9ca3af;
+
+  /* Pills de statut de tâche (À faire / En cours / Terminée) */
+  --color-status-todo-bg: #fde2e1;
+  --color-status-todo-text: #e0524a;
+
+  --color-status-progress-bg: #fdecd2;
+  --color-status-progress-text: #d28a1f;
+
+  --color-status-done-bg: #d8f3df;
+  --color-status-done-text: #2f9e54;
+
+  /* Rayon de bord standard (cards, inputs, modales) */
+  --radius-card: 0.75rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
 }
