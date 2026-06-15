@@ -20,9 +20,7 @@ export default function AuthLayout({
     <div className="flex min-h-screen">
       {/* Colonne gauche : ~1/3 */}
       <div className="flex w-full flex-col justify-center bg-background px-10 py-12 sm:w-1/3 sm:px-12">
-        <div className="mx-auto w-full max-w-xs">
-          {children}
-        </div>
+        <div className="mx-auto w-full max-w-xs">{children}</div>
       </div>
 
       {/* Colonne droite : ~2/3, masquée sur mobile */}

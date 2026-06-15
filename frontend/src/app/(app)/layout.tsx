@@ -25,21 +25,29 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) {
-    // Redirection en cours via le useEffect ci-dessus.
     return null;
   }
 
+  const initials = user.name
+    ? user.name
+        .split(" ")
+        .map((part) => part[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
+    : "?";
+
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-border bg-surface flex items-center justify-between border-b px-8 py-4">
-        <span className="text-primary text-xl font-bold">ABRICOT</span>
+      <header className="flex items-center justify-between border-b border-border bg-surface px-8 py-4">
+        <span className="text-xl font-bold text-primary">ABRICOT</span>
 
         <nav className="flex items-center gap-6">
           <Link
             href="/dashboard"
             className={
               pathname === "/dashboard"
-                ? "text-primary font-medium"
+                ? "font-medium text-primary"
                 : "text-text-secondary hover:text-ink"
             }
           >
@@ -49,7 +57,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             href="/projects"
             className={
               pathname.startsWith("/projects")
-                ? "text-primary font-medium"
+                ? "font-medium text-primary"
                 : "text-text-secondary hover:text-ink"
             }
           >
@@ -59,14 +67,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
         <Link
           href="/account"
-          className="bg-primary flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold text-white"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white"
         >
-          {user.name
-            .split(" ")
-            .map((part) => part[0])
-            .join("")
-            .toUpperCase()
-            .slice(0, 2)}
+          {initials}
         </Link>
       </header>
 

@@ -5,5 +5,5 @@ export default async function ProjectPage({
 }) {
   const { id } = await params;
 
-  return <h1 className="text-ink text-2xl font-semibold">Projet {id}</h1>;
+  return <h1 className="text-2xl font-semibold text-ink">Projet {id}</h1>;
 }

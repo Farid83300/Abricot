@@ -54,9 +54,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     getProfile()
-      .then((profile) => setUser(profile))
+      .then((result) => setUser(result.user))
       .catch(() => {
-        // Token invalide ou expiré : on nettoie.
         clearToken();
         setUser(null);
       })
