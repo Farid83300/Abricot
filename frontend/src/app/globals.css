@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
-:root {
+@theme {
   /* Couleurs de marque Abricot */
   --color-primary: #d3590b;
   --color-primary-hover: #b84a08;
   --color-ink: #0f0f0f;
 
   /* Fond et surfaces (observés sur les maquettes : gris très clair) */
-  --color-background: #f7f8fa;
+  --color-background: #f9fafb;
   --color-surface: #ffffff;
   --color-border: #e5e7eb;
 

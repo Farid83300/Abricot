@@ -12,12 +12,13 @@ import type {
 // Configuration
 // ============================================================
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+// Vide = URLs relatives → proxy Next.js → backend:8000 (évite le CORS)
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 const TOKEN_COOKIE_NAME = "abricot_token";
 
 // ============================================================
-// Stockage du token (cookie, pas localStorage — voir discussion)
+// Stockage du token (cookie, pas localStorage)
 // ============================================================
 
 export function getToken(): string | null {
@@ -91,21 +92,21 @@ async function apiFetch<T>(
 // ============================================================
 
 export function register(payload: RegisterPayload) {
-  return apiFetch<AuthResponse>("/auth/register", {
+  return apiFetch<AuthResponse>("/api/auth/register", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
 
 export function login(payload: LoginPayload) {
-  return apiFetch<AuthResponse>("/auth/login", {
+  return apiFetch<AuthResponse>("/api/auth/login", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 }
 
 export function getProfile() {
-  return apiFetch<User>("/auth/profile");
+  return apiFetch<User>("/api/auth/profile");
 }
 
 // ============================================================
@@ -113,11 +114,11 @@ export function getProfile() {
 // ============================================================
 
 export function getAssignedTasks() {
-  return apiFetch<Task[]>("/dashboard/assigned-tasks");
+  return apiFetch<Task[]>("/api/dashboard/assigned-tasks");
 }
 
 export function getProjectsWithTasks() {
-  return apiFetch<Project[]>("/dashboard/projects-with-tasks");
+  return apiFetch<Project[]>("/api/dashboard/projects-with-tasks");
 }
 
 // ============================================================
@@ -125,11 +126,11 @@ export function getProjectsWithTasks() {
 // ============================================================
 
 export function getProjects() {
-  return apiFetch<Project[]>("/projects");
+  return apiFetch<Project[]>("/api/projects");
 }
 
 export function getProjectTasks(projectId: string) {
-  return apiFetch<Task[]>(`/projects/${projectId}/tasks`);
+  return apiFetch<Task[]>(`/api/projects/${projectId}/tasks`);
 }
 
 // ============================================================
@@ -137,5 +138,5 @@ export function getProjectTasks(projectId: string) {
 // ============================================================
 
 export function getUsers() {
-  return apiFetch<User[]>("/users");
+  return apiFetch<User[]>("/api/users");
 }

@@ -18,22 +18,21 @@ export default function AuthLayout({
 
   return (
     <div className="flex min-h-screen">
-      {/* Colonne gauche : formulaire */}
-      <div className="flex w-full flex-col justify-center px-8 py-12 sm:w-1/2 sm:px-16">
-        <div className="mx-auto w-full max-w-sm">
-          <h1 className="text-primary mb-8 text-2xl font-bold">ABRICOT</h1>
+      {/* Colonne gauche : ~1/3 */}
+      <div className="flex w-full flex-col justify-center bg-background px-10 py-12 sm:w-1/3 sm:px-12">
+        <div className="mx-auto w-full max-w-xs">
           {children}
         </div>
       </div>
 
-      {/* Colonne droite : visuel décoratif, masqué sur mobile */}
-      <div className="relative hidden sm:block sm:w-1/2">
+      {/* Colonne droite : ~2/3, masquée sur mobile */}
+      <div className="relative hidden sm:block sm:w-2/3">
         <Image
           src={imageSrc}
           alt=""
           fill
           priority
-          sizes="50vw"
+          sizes="66vw"
           className="object-cover"
         />
       </div>

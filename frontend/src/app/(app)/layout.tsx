@@ -30,7 +30,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <header className="border-border bg-surface flex items-center justify-between border-b px-8 py-4">
         <span className="text-primary text-xl font-bold">ABRICOT</span>
 
