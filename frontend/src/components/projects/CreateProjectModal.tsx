@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getUsers } from "@/lib/api";
+import {
+  addContributor,
+  ApiError,
+  createProject,
+  searchUsers,
+} from "@/lib/api";
 import type { User } from "@/types/api";
 
 interface Props {
@@ -17,19 +22,28 @@ export default function CreateProjectModal({
 }: Props) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<User[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Charger la liste des utilisateurs
   useEffect(() => {
-    if (isOpen) {
-      getUsers().then(setUsers).catch(console.error);
+    if (searchQuery.trim().length < 2) {
+      // Règle trop stricte pour ce pattern standard (vider un résultat de recherche) :
+      // cf. https://github.com/facebook/react/issues/34743
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSearchResults([]);
+      return;
     }
-  }, [isOpen]);
+    const timeout = setTimeout(() => {
+      searchUsers(searchQuery)
+        .then((result) => setSearchResults(result.users))
+        .catch(console.error);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [searchQuery]);
 
-  // Fermer avec Escape
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
@@ -38,10 +52,21 @@ export default function CreateProjectModal({
     return () => document.removeEventListener("keydown", handleKey);
   }, [isOpen, onClose]);
 
-  function toggleUser(id: string) {
-    setSelectedUserIds((prev) =>
-      prev.includes(id) ? prev.filter((uid) => uid !== id) : [...prev, id],
+  function toggleUser(user: User) {
+    setSelectedUsers((prev) =>
+      prev.some((u) => u.id === user.id)
+        ? prev.filter((u) => u.id !== user.id)
+        : [...prev, user],
     );
+  }
+
+  function handleReset() {
+    setName("");
+    setDescription("");
+    setSearchQuery("");
+    setSearchResults([]);
+    setSelectedUsers([]);
+    setError(null);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -50,44 +75,46 @@ export default function CreateProjectModal({
     setIsSubmitting(true);
 
     try {
-      // On ajoutera l'appel API createProject() à la prochaine étape
-      // quand on aura confirmé la route exacte du back
-      console.log("Créer projet :", { name, description, selectedUserIds });
+      const result = await createProject({
+        name,
+        description: description || undefined,
+      });
+      const newProject = result.project;
+
+      for (const user of selectedUsers) {
+        await addContributor(newProject.id, { email: user.email });
+      }
+
       onSuccess();
       onClose();
-    } catch {
-      setError("Une erreur est survenue.");
+      handleReset();
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setError(err.message);
+      } else {
+        setError("Une erreur est survenue.");
+      }
     } finally {
       setIsSubmitting(false);
     }
-  }
-
-  function handleReset() {
-    setName("");
-    setDescription("");
-    setSelectedUserIds([]);
-    setError(null);
   }
 
   if (!isOpen) return null;
 
   return (
     <>
-      {/* Fond sombre */}
       <div
         className="fixed inset-0 z-40 bg-black/30"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Modale */}
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
         className="fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-surface p-8 shadow-xl"
       >
-        {/* Bouton fermer */}
         <button
           onClick={() => {
             onClose();
@@ -126,7 +153,6 @@ export default function CreateProjectModal({
           noValidate
           className="flex flex-col gap-5"
         >
-          {/* Titre */}
           <div>
             <label
               htmlFor="project-name"
@@ -144,7 +170,6 @@ export default function CreateProjectModal({
             />
           </div>
 
-          {/* Description */}
           <div>
             <label
               htmlFor="project-description"
@@ -162,44 +187,66 @@ export default function CreateProjectModal({
             />
           </div>
 
-          {/* Contributeurs */}
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-ink">
+            <label
+              htmlFor="contributor-search"
+              className="mb-1.5 block text-sm font-medium text-ink"
+            >
               Contributeurs
             </label>
-            <div className="max-h-40 overflow-y-auto rounded-lg border border-border bg-white">
-              {users.length === 0 ? (
-                <p className="p-3 text-sm text-text-secondary">Chargement...</p>
-              ) : (
-                users.map((user) => (
-                  <label
+            <input
+              id="contributor-search"
+              type="text"
+              placeholder="Rechercher par nom ou email..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-ink placeholder:text-text-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+            />
+
+            {searchResults.length > 0 && (
+              <div className="mt-2 max-h-40 overflow-y-auto rounded-lg border border-border bg-white">
+                {searchResults.map((user) => (
+                  <button
+                    type="button"
                     key={user.id}
-                    className="flex cursor-pointer items-center gap-3 px-4 py-2.5 hover:bg-background"
+                    onClick={() => {
+                      toggleUser(user);
+                      setSearchQuery("");
+                      setSearchResults([]);
+                    }}
+                    className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-background"
                   >
-                    <input
-                      type="checkbox"
-                      checked={selectedUserIds.includes(user.id)}
-                      onChange={() => toggleUser(user.id)}
-                      className="accent-primary"
-                    />
                     <span className="text-sm text-ink">{user.name}</span>
                     <span className="text-xs text-text-secondary">
                       {user.email}
                     </span>
-                  </label>
-                ))
-              )}
-            </div>
-            {selectedUserIds.length > 0 && (
-              <p className="mt-1 text-xs text-text-secondary">
-                {selectedUserIds.length} collaborateur
-                {selectedUserIds.length > 1 ? "s" : ""} sélectionné
-                {selectedUserIds.length > 1 ? "s" : ""}
-              </p>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {selectedUsers.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {selectedUsers.map((user) => (
+                  <span
+                    key={user.id}
+                    className="flex items-center gap-1 rounded-full bg-border px-3 py-1 text-xs text-ink"
+                  >
+                    {user.name}
+                    <button
+                      type="button"
+                      onClick={() => toggleUser(user)}
+                      className="text-text-secondary hover:text-status-todo-text"
+                      aria-label={`Retirer ${user.name}`}
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
             )}
           </div>
 
-          {/* Bouton */}
           <button
             type="submit"
             disabled={isSubmitting || !name || !description}

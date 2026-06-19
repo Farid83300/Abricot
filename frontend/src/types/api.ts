@@ -62,7 +62,6 @@ export interface Task {
   updatedAt?: string;
 }
 
-// Projet enrichi avec ses tâches (renvoyé par /dashboard/projects-with-tasks)
 export interface ProjectWithTasks extends Project {
   tasks: Task[];
 }
@@ -85,6 +84,15 @@ export interface ProjectsResponse {
 
 export interface ProfileResponse {
   user: User;
+}
+
+export interface SearchUsersResponse {
+  users: User[];
+}
+
+// L'API enveloppe la réponse de création dans { project: {...} }
+export interface CreateProjectResponse {
+  project: Project;
 }
 
 // ============================================================
@@ -132,8 +140,13 @@ export interface AuthResponse {
 
 export interface ProjectInput {
   name: string;
-  description: string;
-  memberIds?: string[];
+  description?: string;
+  contributors?: string[];
+}
+
+export interface AddContributorPayload {
+  email: string;
+  role?: "ADMIN" | "CONTRIBUTOR";
 }
 
 export interface TaskInput {

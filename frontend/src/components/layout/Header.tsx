@@ -56,9 +56,7 @@ export default function Header({ user }: Props) {
             height={16}
             style={{ width: "16px", height: "16px" }}
             className={
-              isDashboard
-                ? "brightness-0 invert"
-                : "brightness-0 opacity-50"
+              isDashboard ? "brightness-0 invert" : "opacity-50 brightness-0"
             }
           />
           Tableau de bord

@@ -2,7 +2,6 @@ import type { ProjectRole, TaskStatus } from "@/types/api";
 import type { Project } from "@/types/api";
 import type { Task } from "@/types/api";
 
-
 // Formate une date ISO en "9 mars", "15 juin"…
 export function formatDate(dateString: string): string {
   return new Intl.DateTimeFormat("fr-FR", {

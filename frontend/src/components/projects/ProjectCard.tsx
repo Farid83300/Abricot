@@ -25,7 +25,7 @@ export default function ProjectCard({ project }: Props) {
       className="block rounded-xl border border-border bg-surface p-6 transition-shadow hover:shadow-md"
     >
       <h3 className="mb-1 font-semibold text-ink">{project.name}</h3>
-      <p className="mb-4 text-sm text-text-secondary line-clamp-2">
+      <p className="mb-4 line-clamp-2 text-sm text-text-secondary">
         {project.description}
       </p>
 

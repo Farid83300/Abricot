@@ -1,14 +1,18 @@
 import type {
   ApiResponse,
+  AddContributorPayload,
   AuthResponse,
+  CreateProjectResponse,
   DashboardProjectsResponse,
   DashboardTasksResponse,
   LoginPayload,
   ProfileResponse,
+  Project,
+  ProjectInput,
   ProjectsResponse,
   RegisterPayload,
+  SearchUsersResponse,
   Task,
-  User,
 } from "@/types/api";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
@@ -29,7 +33,7 @@ export function setToken(token: string): void {
 
 export function clearToken(): void {
   if (typeof document === "undefined") return;
-  document.cookie = `${TOKEN_COOKIE_NAME}=; path=/; max-age=0`;
+  document.cookie = `${TOKEN_COOKIE_NAME}=; max-age=0; path=/`;
 }
 
 export class ApiError extends Error {
@@ -101,7 +105,26 @@ export function getProjectTasks(projectId: string) {
   return apiFetch<Task[]>(`/api/projects/${projectId}/tasks`);
 }
 
+export function createProject(payload: ProjectInput) {
+  return apiFetch<CreateProjectResponse>("/api/projects", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function addContributor(
+  projectId: string,
+  payload: AddContributorPayload,
+) {
+  return apiFetch<Project>(`/api/projects/${projectId}/contributors`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 // Utilisateurs
-export function getUsers() {
-  return apiFetch<User[]>("/api/users");
+export function searchUsers(query: string) {
+  return apiFetch<SearchUsersResponse>(
+    `/api/users/search?query=${encodeURIComponent(query)}`,
+  );
 }

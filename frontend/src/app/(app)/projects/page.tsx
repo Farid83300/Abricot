@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getProjectsWithTasks } from "@/lib/api";
+import { getProjects, getProjectTasks } from "@/lib/api";
 import ProjectCard from "@/components/projects/ProjectCard";
 import CreateProjectModal from "@/components/projects/CreateProjectModal";
 import type { ProjectWithTasks } from "@/types/api";
@@ -11,13 +11,37 @@ export default function ProjectsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    getProjectsWithTasks()
-      .then((result) => {
-        setProjects(Array.isArray(result.projects) ? result.projects : []);
+  function loadProjects() {
+    setIsLoading(true);
+    getProjects()
+      .then(async (result) => {
+        const baseProjects = Array.isArray(result.projects)
+          ? result.projects
+          : [];
+
+        // Récupère les tâches de chaque projet en parallèle
+        const projectsWithTasks = await Promise.all(
+          baseProjects.map(async (project) => {
+            try {
+              const tasks = await getProjectTasks(project.id);
+              return { ...project, tasks: Array.isArray(tasks) ? tasks : [] };
+            } catch {
+              return { ...project, tasks: [] };
+            }
+          }),
+        );
+
+        setProjects(projectsWithTasks);
       })
       .catch(console.error)
       .finally(() => setIsLoading(false));
+  }
+
+  useEffect(() => {
+    // Règle trop stricte pour ce pattern standard (chargement initial des données) :
+    // cf. https://github.com/facebook/react/issues/34743
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadProjects();
   }, []);
 
   return (
@@ -54,7 +78,7 @@ export default function ProjectsPage() {
       <CreateProjectModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSuccess={() => {}}
+        onSuccess={loadProjects}
       />
     </div>
   );
