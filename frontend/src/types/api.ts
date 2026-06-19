@@ -208,3 +208,17 @@ export interface UpdateTaskPayload {
 export interface UpdateTaskResponse {
   task: Task;
 }
+
+export interface UpdateProfilePayload {
+  name?: string;
+  email?: string;
+}
+
+export interface UpdateProfileResponse {
+  user: User;
+}
+
+export interface UpdatePasswordPayload {
+  currentPassword: string;
+  newPassword: string;
+}

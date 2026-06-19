@@ -22,6 +22,9 @@ import type {
   CreateTaskResponse,
   UpdateTaskPayload,
   UpdateTaskResponse,
+  UpdateProfilePayload,
+  UpdatePasswordPayload,
+  UpdateProfileResponse,
 } from "@/types/api";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
@@ -196,5 +199,19 @@ export function searchUsers(query: string) {
 export function removeContributor(projectId: string, userId: string) {
   return apiFetch<void>(`/api/projects/${projectId}/contributors/${userId}`, {
     method: "DELETE",
+  });
+}
+
+export function updateProfile(payload: UpdateProfilePayload) {
+  return apiFetch<UpdateProfileResponse>("/api/auth/profile", {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function updatePassword(payload: UpdatePasswordPayload) {
+  return apiFetch<null>("/api/auth/password", {
+    method: "PUT",
+    body: JSON.stringify(payload),
   });
 }
