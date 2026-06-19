@@ -195,3 +195,16 @@ export interface UpdateProjectPayload {
 export interface UpdateProjectResponse {
   project: Project;
 }
+
+export interface UpdateTaskPayload {
+  title?: string;
+  description?: string;
+  status?: TaskStatus;
+  priority?: TaskPriority;
+  dueDate?: string;
+  assigneeIds?: string[];
+}
+
+export interface UpdateTaskResponse {
+  task: Task;
+}

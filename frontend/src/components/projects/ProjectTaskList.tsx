@@ -3,6 +3,9 @@
 import { useState } from "react";
 import StatusBadge from "@/components/dashboard/StatusBadge";
 import TaskCommentsSection from "@/components/projects/TaskCommentsSection";
+import TaskActionsMenu from "@/components/projects/TaskActionsMenu";
+import EditTaskModal from "@/components/projects/EditTaskModal";
+import { deleteTask } from "@/lib/api";
 import { formatDate, STATUS_LABELS } from "@/lib/utils";
 import type { Task, TaskStatus } from "@/types/api";
 
@@ -16,6 +19,7 @@ interface Props {
   onSearchChange: (value: string) => void;
   statusFilter: StatusFilter;
   onStatusFilterChange: (value: StatusFilter) => void;
+  onTasksChanged: () => void;
 }
 
 export default function ProjectTaskList({
@@ -25,12 +29,24 @@ export default function ProjectTaskList({
   onSearchChange,
   statusFilter,
   onStatusFilterChange,
+  onTasksChanged,
 }: Props) {
   const [view, setView] = useState<ViewMode>("list");
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   const filteredTasks = tasks
     .filter((t) => t.title.toLowerCase().includes(search.toLowerCase()))
     .filter((t) => statusFilter === "ALL" || t.status === statusFilter);
+
+  async function handleDelete(task: Task) {
+    if (!confirm(`Supprimer la tâche "${task.title}" ?`)) return;
+    try {
+      await deleteTask(projectId, task.id);
+      onTasksChanged();
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <div className="rounded-xl border border-border bg-surface p-6">
@@ -41,7 +57,6 @@ export default function ProjectTaskList({
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Onglets Liste / Calendrier */}
           <div className="flex items-center gap-1 rounded-lg bg-status-progress-bg p-1">
             <button
               type="button"
@@ -134,21 +149,30 @@ export default function ProjectTaskList({
                 key={task.id}
                 className="rounded-xl border border-border bg-surface p-5"
               >
-                <div className="mb-1 flex items-center gap-3">
-                  <h3 className="font-semibold text-ink">{task.title}</h3>
-                  <StatusBadge status={task.status} />
-                </div>
-                <p className="mb-3 text-sm text-text-secondary">
-                  {task.description}
-                </p>
-                <div className="flex items-center gap-4 text-xs text-text-secondary">
-                  {task.dueDate && (
-                    <span>Échéance : {formatDate(task.dueDate)}</span>
-                  )}
-                  <span>
-                    Assigné à :{" "}
-                    {task.assignees.map((a) => a.user.name).join(", ")}
-                  </span>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="mb-1 flex items-center gap-3">
+                      <h3 className="font-semibold text-ink">{task.title}</h3>
+                      <StatusBadge status={task.status} />
+                    </div>
+                    <p className="mb-3 text-sm text-text-secondary">
+                      {task.description}
+                    </p>
+                    <div className="flex items-center gap-4 text-xs text-text-secondary">
+                      {task.dueDate && (
+                        <span>Échéance : {formatDate(task.dueDate)}</span>
+                      )}
+                      <span>
+                        Assigné à :{" "}
+                        {task.assignees.map((a) => a.user.name).join(", ")}
+                      </span>
+                    </div>
+                  </div>
+
+                  <TaskActionsMenu
+                    onEdit={() => setEditingTask(task)}
+                    onDelete={() => handleDelete(task)}
+                  />
                 </div>
 
                 <TaskCommentsSection
@@ -160,6 +184,19 @@ export default function ProjectTaskList({
             ))
           )}
         </div>
+      )}
+
+      {editingTask && (
+        <EditTaskModal
+          isOpen={!!editingTask}
+          projectId={projectId}
+          task={editingTask}
+          onClose={() => setEditingTask(null)}
+          onSuccess={() => {
+            setEditingTask(null);
+            onTasksChanged();
+          }}
+        />
       )}
     </div>
   );

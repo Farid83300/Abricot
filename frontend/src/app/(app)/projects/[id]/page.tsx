@@ -140,6 +140,7 @@ export default function ProjectPage() {
         onSearchChange={setSearch}
         statusFilter={statusFilter}
         onStatusFilterChange={setStatusFilter}
+        onTasksChanged={loadData}
       />
 
       <EditProjectModal

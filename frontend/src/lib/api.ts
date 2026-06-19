@@ -20,6 +20,8 @@ import type {
   UpdateProjectResponse,
   CreateTaskPayload,
   CreateTaskResponse,
+  UpdateTaskPayload,
+  UpdateTaskResponse,
 } from "@/types/api";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
@@ -123,6 +125,16 @@ export function createProject(payload: ProjectInput) {
   });
 }
 
+export function updateProject(
+  projectId: string,
+  payload: UpdateProjectPayload,
+) {
+  return apiFetch<UpdateProjectResponse>(`/api/projects/${projectId}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function addContributor(
   projectId: string,
   payload: AddContributorPayload,
@@ -147,25 +159,22 @@ export function createComment(
   );
 }
 
-// Utilisateurs
-export function searchUsers(query: string) {
-  return apiFetch<SearchUsersResponse>(
-    `/api/users/search?query=${encodeURIComponent(query)}`,
+export function updateTask(
+  projectId: string,
+  taskId: string,
+  payload: UpdateTaskPayload,
+) {
+  return apiFetch<UpdateTaskResponse>(
+    `/api/projects/${projectId}/tasks/${taskId}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    },
   );
 }
 
-export function updateProject(
-  projectId: string,
-  payload: UpdateProjectPayload,
-) {
-  return apiFetch<UpdateProjectResponse>(`/api/projects/${projectId}`, {
-    method: "PUT",
-    body: JSON.stringify(payload),
-  });
-}
-
-export function removeContributor(projectId: string, userId: string) {
-  return apiFetch<void>(`/api/projects/${projectId}/contributors/${userId}`, {
+export function deleteTask(projectId: string, taskId: string) {
+  return apiFetch<void>(`/api/projects/${projectId}/tasks/${taskId}`, {
     method: "DELETE",
   });
 }
@@ -174,5 +183,18 @@ export function createTask(projectId: string, payload: CreateTaskPayload) {
   return apiFetch<CreateTaskResponse>(`/api/projects/${projectId}/tasks`, {
     method: "POST",
     body: JSON.stringify(payload),
+  });
+}
+
+// Utilisateurs
+export function searchUsers(query: string) {
+  return apiFetch<SearchUsersResponse>(
+    `/api/users/search?query=${encodeURIComponent(query)}`,
+  );
+}
+
+export function removeContributor(projectId: string, userId: string) {
+  return apiFetch<void>(`/api/projects/${projectId}/contributors/${userId}`, {
+    method: "DELETE",
   });
 }
