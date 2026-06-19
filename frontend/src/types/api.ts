@@ -37,6 +37,19 @@ export interface TaskAssignee {
   assignedAt?: string;
 }
 
+export interface CreateTaskPayload {
+  title: string;
+  description?: string;
+  priority?: TaskPriority;
+  dueDate?: string;
+  status?: TaskStatus;
+  assigneeIds?: string[];
+}
+
+export interface CreateTaskResponse {
+  task: Task;
+}
+
 export interface Comment {
   id: string;
   content: string;
@@ -90,9 +103,18 @@ export interface SearchUsersResponse {
   users: User[];
 }
 
-// L'API enveloppe la réponse de création dans { project: {...} }
 export interface CreateProjectResponse {
   project: Project;
+}
+
+// Réponse de GET /projects/:id
+export interface SingleProjectResponse {
+  project: Project;
+}
+
+// Réponse de GET /projects/:id/tasks
+export interface ProjectTasksResponse {
+  tasks: Task[];
 }
 
 // ============================================================
@@ -155,4 +177,21 @@ export interface TaskInput {
   dueDate?: string;
   status?: TaskStatus;
   assigneeIds?: string[];
+}
+
+export interface CreateCommentPayload {
+  content: string;
+}
+
+export interface CreateCommentResponse {
+  comment: Comment;
+}
+
+export interface UpdateProjectPayload {
+  name?: string;
+  description?: string;
+}
+
+export interface UpdateProjectResponse {
+  project: Project;
 }

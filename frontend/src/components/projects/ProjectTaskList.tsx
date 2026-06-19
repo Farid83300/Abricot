@@ -1,0 +1,166 @@
+"use client";
+
+import { useState } from "react";
+import StatusBadge from "@/components/dashboard/StatusBadge";
+import TaskCommentsSection from "@/components/projects/TaskCommentsSection";
+import { formatDate, STATUS_LABELS } from "@/lib/utils";
+import type { Task, TaskStatus } from "@/types/api";
+
+export type StatusFilter = TaskStatus | "ALL";
+type ViewMode = "list" | "calendar";
+
+interface Props {
+  projectId: string;
+  tasks: Task[];
+  search: string;
+  onSearchChange: (value: string) => void;
+  statusFilter: StatusFilter;
+  onStatusFilterChange: (value: StatusFilter) => void;
+}
+
+export default function ProjectTaskList({
+  projectId,
+  tasks,
+  search,
+  onSearchChange,
+  statusFilter,
+  onStatusFilterChange,
+}: Props) {
+  const [view, setView] = useState<ViewMode>("list");
+
+  const filteredTasks = tasks
+    .filter((t) => t.title.toLowerCase().includes(search.toLowerCase()))
+    .filter((t) => statusFilter === "ALL" || t.status === statusFilter);
+
+  return (
+    <div className="rounded-xl border border-border bg-surface p-6">
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h2 className="font-semibold text-ink">Tâches</h2>
+          <p className="text-sm text-text-secondary">Par ordre de priorité</p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {/* Onglets Liste / Calendrier */}
+          <div className="flex items-center gap-1 rounded-lg bg-status-progress-bg p-1">
+            <button
+              type="button"
+              onClick={() => setView("list")}
+              className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium ${
+                view === "list"
+                  ? "bg-surface text-primary"
+                  : "text-text-secondary"
+              }`}
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+                />
+              </svg>
+              Liste
+            </button>
+            <button
+              type="button"
+              onClick={() => setView("calendar")}
+              className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium ${
+                view === "calendar"
+                  ? "bg-surface text-primary"
+                  : "text-text-secondary"
+              }`}
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              Calendrier
+            </button>
+          </div>
+
+          <select
+            value={statusFilter}
+            onChange={(e) =>
+              onStatusFilterChange(e.target.value as StatusFilter)
+            }
+            className="rounded-lg border border-border bg-surface px-4 py-2 text-sm text-ink focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+          >
+            <option value="ALL">Statut</option>
+            {Object.entries(STATUS_LABELS).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+
+          <input
+            type="text"
+            placeholder="Rechercher une tâche"
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="w-56 rounded-lg border border-border bg-background px-4 py-2 text-sm text-ink placeholder:text-text-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+          />
+        </div>
+      </div>
+
+      {view === "calendar" ? (
+        <p className="py-12 text-center text-sm text-text-secondary">
+          Vue calendrier à venir.
+        </p>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {filteredTasks.length === 0 ? (
+            <p className="py-8 text-center text-sm text-text-secondary">
+              Aucune tâche.
+            </p>
+          ) : (
+            filteredTasks.map((task) => (
+              <div
+                key={task.id}
+                className="rounded-xl border border-border bg-surface p-5"
+              >
+                <div className="mb-1 flex items-center gap-3">
+                  <h3 className="font-semibold text-ink">{task.title}</h3>
+                  <StatusBadge status={task.status} />
+                </div>
+                <p className="mb-3 text-sm text-text-secondary">
+                  {task.description}
+                </p>
+                <div className="flex items-center gap-4 text-xs text-text-secondary">
+                  {task.dueDate && (
+                    <span>Échéance : {formatDate(task.dueDate)}</span>
+                  )}
+                  <span>
+                    Assigné à :{" "}
+                    {task.assignees.map((a) => a.user.name).join(", ")}
+                  </span>
+                </div>
+
+                <TaskCommentsSection
+                  projectId={projectId}
+                  taskId={task.id}
+                  initialComments={task.comments}
+                />
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

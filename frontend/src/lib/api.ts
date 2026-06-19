@@ -3,6 +3,8 @@ import type {
   AddContributorPayload,
   AuthResponse,
   CreateProjectResponse,
+  CreateCommentPayload,
+  CreateCommentResponse,
   DashboardProjectsResponse,
   DashboardTasksResponse,
   LoginPayload,
@@ -10,9 +12,14 @@ import type {
   Project,
   ProjectInput,
   ProjectsResponse,
+  ProjectTasksResponse,
   RegisterPayload,
   SearchUsersResponse,
-  Task,
+  SingleProjectResponse,
+  UpdateProjectPayload,
+  UpdateProjectResponse,
+  CreateTaskPayload,
+  CreateTaskResponse,
 } from "@/types/api";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
@@ -101,8 +108,12 @@ export function getProjects() {
   return apiFetch<ProjectsResponse>("/api/projects");
 }
 
+export function getProject(projectId: string) {
+  return apiFetch<SingleProjectResponse>(`/api/projects/${projectId}`);
+}
+
 export function getProjectTasks(projectId: string) {
-  return apiFetch<Task[]>(`/api/projects/${projectId}/tasks`);
+  return apiFetch<ProjectTasksResponse>(`/api/projects/${projectId}/tasks`);
 }
 
 export function createProject(payload: ProjectInput) {
@@ -122,9 +133,46 @@ export function addContributor(
   });
 }
 
+export function createComment(
+  projectId: string,
+  taskId: string,
+  payload: CreateCommentPayload,
+) {
+  return apiFetch<CreateCommentResponse>(
+    `/api/projects/${projectId}/tasks/${taskId}/comments`,
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    },
+  );
+}
+
 // Utilisateurs
 export function searchUsers(query: string) {
   return apiFetch<SearchUsersResponse>(
     `/api/users/search?query=${encodeURIComponent(query)}`,
   );
+}
+
+export function updateProject(
+  projectId: string,
+  payload: UpdateProjectPayload,
+) {
+  return apiFetch<UpdateProjectResponse>(`/api/projects/${projectId}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function removeContributor(projectId: string, userId: string) {
+  return apiFetch<void>(`/api/projects/${projectId}/contributors/${userId}`, {
+    method: "DELETE",
+  });
+}
+
+export function createTask(projectId: string, payload: CreateTaskPayload) {
+  return apiFetch<CreateTaskResponse>(`/api/projects/${projectId}/tasks`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
