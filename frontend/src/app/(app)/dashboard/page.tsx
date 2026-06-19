@@ -26,7 +26,6 @@ export default function DashboardPage() {
           : [];
         setTasks(taskArray);
 
-        // L'API renvoie { projects: [...] }
         const projectArray = Array.isArray(projectsResult.projects)
           ? projectsResult.projects
           : [];
@@ -65,7 +64,7 @@ export default function DashboardPage() {
           onClick={() => setView("list")}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             view === "list"
-              ? "bg-primary/10 text-primary"
+              ? "bg-status-progress-bg text-ink"
               : "text-text-secondary hover:text-ink"
           }`}
         >
@@ -88,7 +87,7 @@ export default function DashboardPage() {
           onClick={() => setView("kanban")}
           className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             view === "kanban"
-              ? "bg-primary/10 text-primary"
+              ? "bg-status-progress-bg text-ink"
               : "text-text-secondary hover:text-ink"
           }`}
         >

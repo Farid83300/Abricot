@@ -75,6 +75,10 @@ export default function ProjectPage() {
     setIsAIReviewOpen(true);
   }
 
+  function handleAddMoreDrafts(description: string) {
+    setAiDrafts((prev) => [...prev, ...generateDraftTasks(description)]);
+  }
+
   function handleUpdateDraft(
     draftId: string,
     field: "title" | "description",
@@ -171,6 +175,7 @@ export default function ProjectPage() {
         onUpdateDraft={handleUpdateDraft}
         onRemoveDraft={handleRemoveDraft}
         onConfirm={handleConfirmAITasks}
+        onAddMore={handleAddMoreDrafts}
       />
     </div>
   );

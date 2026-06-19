@@ -20,6 +20,7 @@ interface Props {
   ) => void;
   onRemoveDraft: (id: string) => void;
   onConfirm: () => void;
+  onAddMore: (description: string) => void;
 }
 
 export default function ReviewAITasksModal({
@@ -30,8 +31,16 @@ export default function ReviewAITasksModal({
   onUpdateDraft,
   onRemoveDraft,
   onConfirm,
+  onAddMore,
 }: Props) {
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [newDescription, setNewDescription] = useState("");
+
+  function handleAddMore() {
+    if (!newDescription.trim()) return;
+    onAddMore(newDescription.trim());
+    setNewDescription("");
+  }
 
   if (!isOpen) return null;
 
@@ -47,7 +56,7 @@ export default function ReviewAITasksModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="ai-review-title"
-        className="fixed top-1/2 left-1/2 z-50 flex max-h-[80vh] w-full max-w-md -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-surface p-8 shadow-xl"
+        className="fixed top-1/2 left-1/2 z-50 flex max-h-[85vh] w-full max-w-md -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-surface p-8 shadow-xl"
       >
         <button
           onClick={onClose}
@@ -73,7 +82,7 @@ export default function ReviewAITasksModal({
           id="ai-review-title"
           className="mb-6 flex items-center gap-2 text-2xl font-semibold text-ink"
         >
-          ✦ Vos tâches...
+          <span className="text-primary">✦</span> Vos tâches...
         </h2>
 
         <div className="flex-1 space-y-3 overflow-y-auto pr-1">
@@ -88,14 +97,16 @@ export default function ReviewAITasksModal({
                 className="rounded-xl border border-border bg-surface p-4"
               >
                 {editingId === draft.id ? (
-                  <div className="flex flex-col gap-2">
+                  <>
                     <input
                       type="text"
                       value={draft.title}
                       onChange={(e) =>
                         onUpdateDraft(draft.id, "title", e.target.value)
                       }
-                      className="rounded-lg border border-border px-3 py-2 text-sm font-semibold text-ink focus:border-primary focus:outline-none"
+                      onBlur={() => setEditingId(null)}
+                      autoFocus
+                      className="mb-1 w-full border-b border-dashed border-primary bg-transparent font-semibold text-ink focus:outline-none"
                     />
                     <textarea
                       value={draft.description}
@@ -103,41 +114,35 @@ export default function ReviewAITasksModal({
                         onUpdateDraft(draft.id, "description", e.target.value)
                       }
                       rows={2}
-                      className="rounded-lg border border-border px-3 py-2 text-sm text-text-secondary focus:border-primary focus:outline-none"
+                      className="mb-3 w-full border-b border-dashed border-primary bg-transparent text-sm text-text-secondary focus:outline-none"
                     />
-                    <button
-                      type="button"
-                      onClick={() => setEditingId(null)}
-                      className="self-end text-xs font-medium text-primary hover:underline"
-                    >
-                      Terminer
-                    </button>
-                  </div>
+                  </>
                 ) : (
                   <>
                     <h3 className="font-semibold text-ink">{draft.title}</h3>
-                    <p className="mt-1 text-sm text-text-secondary">
+                    <p className="mb-3 text-sm text-text-secondary">
                       {draft.description}
                     </p>
-                    <div className="mt-3 flex items-center gap-3 text-xs">
-                      <button
-                        type="button"
-                        onClick={() => onRemoveDraft(draft.id)}
-                        className="flex items-center gap-1 text-text-secondary hover:text-status-todo-text"
-                      >
-                        🗑 Supprimer
-                      </button>
-                      <span className="text-border">|</span>
-                      <button
-                        type="button"
-                        onClick={() => setEditingId(draft.id)}
-                        className="flex items-center gap-1 text-text-secondary hover:text-ink"
-                      >
-                        ✎ Modifier
-                      </button>
-                    </div>
                   </>
                 )}
+
+                <div className="flex items-center gap-3 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => onRemoveDraft(draft.id)}
+                    className="flex items-center gap-1 text-text-secondary hover:text-status-todo-text"
+                  >
+                    🗑 Supprimer
+                  </button>
+                  <span className="text-border">|</span>
+                  <button
+                    type="button"
+                    onClick={() => setEditingId(draft.id)}
+                    className="flex items-center gap-1 text-text-secondary hover:text-ink"
+                  >
+                    ✎ Modifier
+                  </button>
+                </div>
               </div>
             ))
           )}
@@ -151,6 +156,29 @@ export default function ReviewAITasksModal({
         >
           {isCreating ? "Création..." : "+ Ajouter les tâches"}
         </button>
+
+        {/* Barre de saisie persistante pour ajouter d'autres tâches */}
+        <div className="mt-6 flex items-center gap-3 rounded-full bg-background px-5 py-3">
+          <input
+            type="text"
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleAddMore();
+            }}
+            placeholder="Décrivez les tâches que vous souhaitez ajouter..."
+            className="flex-1 bg-transparent text-sm text-ink placeholder:text-text-placeholder focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={handleAddMore}
+            disabled={!newDescription.trim()}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="Générer d'autres tâches"
+          >
+            +
+          </button>
+        </div>
       </div>
     </>
   );

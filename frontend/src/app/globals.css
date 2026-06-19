@@ -18,13 +18,13 @@
 
   /* Pills de statut de tâche (À faire / En cours / Terminée) */
   --color-status-todo-bg: #fde2e1;
-  --color-status-todo-text: #e0524a;
+  --color-status-todo-text: #a32a25; /* plus foncé qu'avant */
 
   --color-status-progress-bg: #fdecd2;
-  --color-status-progress-text: #d28a1f;
+  --color-status-progress-text: #a8650a; /* plus foncé qu'avant */
 
   --color-status-done-bg: #d8f3df;
-  --color-status-done-text: #2f9e54;
+  --color-status-done-text: #1f7a3d; /* plus foncé qu'avant */
 
   /* Rayon de bord standard (cards, inputs, modales) */
   --radius-card: 0.75rem;

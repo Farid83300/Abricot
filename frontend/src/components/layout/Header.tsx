@@ -86,7 +86,7 @@ export default function Header({ user }: Props) {
       {/* Avatar */}
       <Link
         href="/account"
-        className="flex h-15 w-15 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white"
+        className="flex h-15 w-15 items-center justify-center rounded-full bg-primary-hover text-sm font-semibold text-white"
       >
         {initials}
       </Link>
