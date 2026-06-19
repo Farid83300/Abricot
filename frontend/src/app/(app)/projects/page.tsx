@@ -46,14 +46,14 @@ export default function ProjectsPage() {
 
   return (
     <div>
-      <div className="mb-8 flex items-start justify-between">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-ink">Mes projets</h1>
           <p className="mt-1 text-sm text-text-secondary">Gérez vos projets</p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90"
+          className="w-full rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90 sm:w-auto"
         >
           + Créer un projet
         </button>
@@ -68,7 +68,7 @@ export default function ProjectsPage() {
           Aucun projet pour le moment.
         </p>
       ) : (
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

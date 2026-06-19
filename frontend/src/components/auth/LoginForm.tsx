@@ -36,90 +36,92 @@ export default function LoginForm() {
   }
 
   return (
-    <div>
-      {/* Logo — grand espace sous le logo avant le titre */}
+    <div className="flex h-full flex-col">
+      {/* Logo — fixé en haut, centré, taille croissante par breakpoint */}
       <Image
         src="/logo.svg"
         alt="Abricot"
         width={160}
         height={54}
-        className="mb-20 h-auto w-auto"
+        className="mx-auto h-auto w-56 sm:w-64 lg:w-68"
         priority
       />
 
-      {/* Titre — espace sous le titre avant les champs */}
-      <h2 className="mb-8 text-3xl font-semibold text-primary">Connexion</h2>
+      {/* Bloc formulaire — centré verticalement dans l'espace restant */}
+      <div className="flex flex-1 flex-col justify-center">
+        <h2 className="mb-8 text-3xl font-semibold text-primary">Connexion</h2>
 
-      {/* Bandeau d'erreur */}
-      {error && (
-        <div className="mb-4 rounded-lg border border-status-todo-text bg-status-todo-bg px-4 py-3 text-sm text-status-todo-text">
-          {error}
-        </div>
-      )}
+        {/* Bandeau d'erreur */}
+        {error && (
+          <div className="mb-4 rounded-lg border border-status-todo-text bg-status-todo-bg px-4 py-3 text-sm text-status-todo-text">
+            {error}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} noValidate>
-        {/* Email */}
-        <div className="mb-5">
-          <label
-            htmlFor="email"
-            className="mb-1.5 block text-sm font-medium text-ink"
+        <form onSubmit={handleSubmit} noValidate>
+          {/* Email */}
+          <div className="mb-5">
+            <label
+              htmlFor="email"
+              className="mb-1.5 block text-sm font-medium text-ink"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-ink placeholder:text-text-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+            />
+          </div>
+
+          {/* Mot de passe */}
+          <div className="mb-6">
+            <label
+              htmlFor="password"
+              className="mb-1.5 block text-sm font-medium text-ink"
+            >
+              Mot de passe
+            </label>
+            <input
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-ink placeholder:text-text-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+            />
+          </div>
+
+          {/* Bouton */}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full rounded-lg bg-ink px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-ink placeholder:text-text-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
-          />
-        </div>
+            {isSubmitting ? "Connexion en cours..." : "Se connecter"}
+          </button>
 
-        {/* Mot de passe */}
-        <div className="mb-6">
-          <label
-            htmlFor="password"
-            className="mb-1.5 block text-sm font-medium text-ink"
-          >
-            Mot de passe
-          </label>
-          <input
-            id="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-lg border border-border bg-white px-4 py-3 text-sm text-ink placeholder:text-text-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
-          />
-        </div>
+          {/* Mot de passe oublié — juste sous le bouton, centré */}
+          <div className="mt-3 text-center">
+            <Link href="#" className="text-sm text-primary hover:underline">
+              Mot de passe oublié?
+            </Link>
+          </div>
+        </form>
 
-        {/* Bouton */}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-lg bg-ink px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {isSubmitting ? "Connexion en cours..." : "Se connecter"}
-        </button>
-
-        {/* Mot de passe oublié — juste sous le bouton, centré */}
-        <div className="mt-3 text-center">
-          <Link href="#" className="text-sm text-primary hover:underline">
-            Mot de passe oublié?
+        {/* Lien inscription */}
+        <p className="mt-10 text-sm text-text-secondary">
+          Pas encore de compte ?{" "}
+          <Link href="/register" className="text-primary hover:underline">
+            Créer un compte
           </Link>
-        </div>
-      </form>
-
-      {/* Lien inscription — bien espacé en bas */}
-      <p className="mt-16 text-sm text-text-secondary">
-        Pas encore de compte ?{" "}
-        <Link href="/register" className="text-primary hover:underline">
-          Créer un compte
-        </Link>
-      </p>
+        </p>
+      </div>
     </div>
   );
 }

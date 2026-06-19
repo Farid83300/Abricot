@@ -13,7 +13,9 @@ export default function TaskKanbanCard({ task, projectNames }: Props) {
     <div className="rounded-xl border border-border bg-surface p-4">
       <div className="mb-2 flex items-start justify-between gap-2">
         <h3 className="text-sm font-semibold text-ink">{task.title}</h3>
-        <StatusBadge status={task.status} />
+        <div className="shrink-0">
+          <StatusBadge status={task.status} />
+        </div>
       </div>
       <p className="mb-3 line-clamp-2 text-xs text-text-secondary">
         {task.description}

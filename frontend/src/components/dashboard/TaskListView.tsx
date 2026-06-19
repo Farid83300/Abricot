@@ -17,8 +17,8 @@ export default function TaskListView({ tasks, projectNames }: Props) {
   );
 
   return (
-    <div className="mx-7.5 rounded-xl border border-border bg-surface p-6">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="rounded-xl border border-border bg-surface p-4 sm:mx-7.5 sm:p-6">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="font-semibold text-ink">Mes tâches assignées</h2>
           <p className="text-sm text-text-secondary">Par ordre de priorité</p>
@@ -29,7 +29,7 @@ export default function TaskListView({ tasks, projectNames }: Props) {
             placeholder="Rechercher une tâche"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-56 rounded-lg border border-border bg-background py-2 pr-10 pl-4 text-sm text-ink placeholder:text-text-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+            className="w-full rounded-lg border border-border bg-background py-2 pr-10 pl-4 text-sm text-ink placeholder:text-text-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none sm:w-56"
           />
           <svg
             className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-text-secondary"

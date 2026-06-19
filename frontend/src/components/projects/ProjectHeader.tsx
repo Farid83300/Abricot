@@ -28,11 +28,11 @@ export default function ProjectHeader({
 
   return (
     <div>
-      <div className="mb-6 flex items-start justify-between">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-start gap-4">
           <Link
             href="/projects"
-            className="mt-1 flex h-9 w-9 items-center justify-center rounded-lg border border-border text-text-secondary hover:text-ink"
+            className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border text-text-secondary hover:text-ink"
             aria-label="Retour"
           >
             <svg
@@ -50,7 +50,7 @@ export default function ProjectHeader({
             </svg>
           </Link>
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-2xl font-semibold text-ink">
                 {project.name}
               </h1>
@@ -68,17 +68,17 @@ export default function ProjectHeader({
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <button
             onClick={onCreateTask}
-            className="rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90"
+            className="w-full rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90 sm:w-auto"
           >
             Créer une tâche
           </button>
           <button
             type="button"
             onClick={onOpenAI}
-            className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90 sm:w-auto"
           >
             <Image
               src="/ai-star.svg"
@@ -93,20 +93,20 @@ export default function ProjectHeader({
         </div>
       </div>
 
-      <div className="mb-6 flex items-center justify-between rounded-xl bg-background px-6 py-4">
+      <div className="mb-6 flex flex-col gap-3 rounded-xl bg-background px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <span className="text-md font-medium text-ink">
           Contributeurs {memberCount} personne{memberCount > 1 ? "s" : ""}
         </span>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {project.owner && (
-            <span className="rounded-full bg-status-progress-bg px-3 py-1 text-xs font-medium text-status-progress-text">
+            <span className="rounded-full bg-status-progress-bg px-3 py-1 text-xs font-medium whitespace-nowrap text-status-progress-text">
               {getInitials(project.owner.name)} Propriétaire
             </span>
           )}
           {project.members?.map((m) => (
             <span
               key={m.id}
-              className="rounded-full bg-border px-3 py-1 text-xs font-medium text-text-secondary"
+              className="rounded-full bg-border px-3 py-1 text-xs font-medium whitespace-nowrap text-text-secondary"
             >
               {getInitials(m.user.name)} {m.user.name}
             </span>

@@ -44,7 +44,7 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <div className="mb-8 flex items-start justify-between">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-ink">Tableau de bord</h1>
           <p className="mt-1 text-sm text-text-secondary">
@@ -53,7 +53,7 @@ export default function DashboardPage() {
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90"
+          className="w-full rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90 sm:w-auto"
         >
           + Créer un projet
         </button>

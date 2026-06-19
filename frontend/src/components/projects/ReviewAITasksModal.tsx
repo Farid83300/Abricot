@@ -56,7 +56,7 @@ export default function ReviewAITasksModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="ai-review-title"
-        className="fixed top-1/2 left-1/2 z-50 flex max-h-[85vh] w-full max-w-md -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-surface p-8 shadow-xl"
+        className="fixed top-1/2 left-1/2 z-50 flex max-h-[85vh] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-surface p-5 shadow-xl sm:p-8"
       >
         <button
           onClick={onClose}

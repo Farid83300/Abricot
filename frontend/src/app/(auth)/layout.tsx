@@ -18,13 +18,15 @@ export default function AuthLayout({
 
   return (
     <div className="flex min-h-screen">
-      {/* Colonne gauche : ~1/3 */}
-      <div className="flex w-full flex-col justify-center bg-background px-10 py-12 sm:w-1/3 sm:px-12">
-        <div className="mx-auto w-full max-w-xs">{children}</div>
+      {/* Colonne gauche : pleine largeur jusqu'à lg, puis ~1/3 */}
+      <div className="flex w-full flex-col bg-background px-6 pt-8 pb-10 sm:px-10 sm:pt-10 lg:w-1/3 lg:px-12 lg:pt-12">
+        <div className="mx-auto flex w-full max-w-xs flex-1 flex-col">
+          {children}
+        </div>
       </div>
 
-      {/* Colonne droite : ~2/3, masquée sur mobile */}
-      <div className="relative hidden sm:block sm:w-2/3">
+      {/* Colonne droite : ~2/3, visible uniquement à partir de lg (1024px) */}
+      <div className="relative hidden lg:block lg:w-2/3">
         <Image
           src={imageSrc}
           alt=""

@@ -36,7 +36,7 @@ export default function CreateTaskAIModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="ai-create-title"
-        className="fixed top-1/2 left-1/2 z-50 flex h-125 w-full max-w-md -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-surface p-8 shadow-xl"
+        className="fixed top-1/2 left-1/2 z-50 flex h-125 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-surface p-5 shadow-xl sm:p-8"
       >
         <button
           onClick={onClose}

@@ -49,19 +49,19 @@ export default function ProjectTaskList({
   }
 
   return (
-    <div className="rounded-xl border border-border bg-surface p-6">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="rounded-xl border border-border bg-surface p-4 sm:p-6">
+      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="font-semibold text-ink">Tâches</h2>
           <p className="text-sm text-text-secondary">Par ordre de priorité</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           <div className="flex items-center gap-1 rounded-lg bg-status-progress-bg p-1">
             <button
               type="button"
               onClick={() => setView("list")}
-              className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium ${
+              className={`flex flex-1 items-center justify-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium sm:flex-initial ${
                 view === "list"
                   ? "bg-surface text-primary"
                   : "text-text-secondary"
@@ -85,7 +85,7 @@ export default function ProjectTaskList({
             <button
               type="button"
               onClick={() => setView("calendar")}
-              className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium ${
+              className={`flex flex-1 items-center justify-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium sm:flex-initial ${
                 view === "calendar"
                   ? "bg-surface text-primary"
                   : "text-text-secondary"
@@ -113,7 +113,7 @@ export default function ProjectTaskList({
             onChange={(e) =>
               onStatusFilterChange(e.target.value as StatusFilter)
             }
-            className="rounded-lg border border-border bg-surface px-4 py-2 text-sm text-ink focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+            className="w-full rounded-lg border border-border bg-surface px-4 py-2 text-sm text-ink focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none sm:w-auto"
           >
             <option value="ALL">Statut</option>
             {Object.entries(STATUS_LABELS).map(([value, label]) => (
@@ -128,7 +128,7 @@ export default function ProjectTaskList({
             placeholder="Rechercher une tâche"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-56 rounded-lg border border-border bg-background px-4 py-2 text-sm text-ink placeholder:text-text-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+            className="w-full rounded-lg border border-border bg-background px-4 py-2 text-sm text-ink placeholder:text-text-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none sm:w-56"
           />
         </div>
       </div>
@@ -149,16 +149,16 @@ export default function ProjectTaskList({
                 key={task.id}
                 className="rounded-xl border border-border bg-surface p-5"
               >
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex-1">
-                    <div className="mb-1 flex items-center gap-3">
+                    <div className="mb-1 flex flex-wrap items-center gap-3">
                       <h3 className="font-semibold text-ink">{task.title}</h3>
                       <StatusBadge status={task.status} />
                     </div>
                     <p className="mb-3 text-sm text-text-secondary">
                       {task.description}
                     </p>
-                    <div className="flex items-center gap-4 text-xs text-text-secondary">
+                    <div className="flex flex-col gap-1 text-xs text-text-secondary sm:flex-row sm:items-center sm:gap-4">
                       {task.dueDate && (
                         <span>Échéance : {formatDate(task.dueDate)}</span>
                       )}

@@ -14,11 +14,14 @@ const COLUMNS: { status: TaskStatus; label: string }[] = [
 
 export default function TaskKanbanView({ tasks, projectNames }: Props) {
   return (
-    <div className="grid grid-cols-3 gap-6">
+    <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible sm:pb-0">
       {COLUMNS.map(({ status, label }) => {
         const columnTasks = tasks.filter((t) => t.status === status);
         return (
-          <div key={status}>
+          <div
+            key={status}
+            className="w-72 shrink-0 snap-start sm:w-auto sm:shrink"
+          >
             <div className="mb-4 flex items-center gap-2">
               <h2 className="font-semibold text-ink">{label}</h2>
               <span className="rounded-full bg-border px-2 py-0.5 text-xs font-medium text-text-secondary">

@@ -8,7 +8,7 @@ interface Props {
 export default function StatusBadge({ status }: Props) {
   return (
     <span
-      className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLES[status]}`}
+      className={`rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap ${STATUS_STYLES[status]}`}
     >
       {STATUS_LABELS[status]}
     </span>
