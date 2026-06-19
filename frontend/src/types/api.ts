@@ -62,6 +62,11 @@ export interface Task {
   updatedAt?: string;
 }
 
+// Projet enrichi avec ses tâches (renvoyé par /dashboard/projects-with-tasks)
+export interface ProjectWithTasks extends Project {
+  tasks: Task[];
+}
+
 // ============================================================
 // Réponses spécifiques des endpoints
 // ============================================================
@@ -71,14 +76,13 @@ export interface DashboardTasksResponse {
 }
 
 export interface DashboardProjectsResponse {
-  projects: Project[];
+  projects: ProjectWithTasks[];
 }
 
 export interface ProjectsResponse {
   projects: Project[];
 }
 
-// L'API renvoie { user: {...} } dans data pour /auth/profile
 export interface ProfileResponse {
   user: User;
 }

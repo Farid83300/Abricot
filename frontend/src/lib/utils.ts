@@ -1,5 +1,7 @@
 import type { ProjectRole, TaskStatus } from "@/types/api";
 import type { Project } from "@/types/api";
+import type { Task } from "@/types/api";
+
 
 // Formate une date ISO en "9 mars", "15 juin"…
 export function formatDate(dateString: string): string {
@@ -31,4 +33,15 @@ export function getProjectRole(project: Project, userId: string): ProjectRole {
   const member = project.members?.find((m) => m.user.id === userId);
   if (!member) return "NONE";
   return member.role;
+}
+
+export function calculateProgress(tasks: Task[]): {
+  percent: number;
+  done: number;
+  total: number;
+} {
+  const total = tasks.length;
+  const done = tasks.filter((t) => t.status === "DONE").length;
+  const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+  return { percent, done, total };
 }
