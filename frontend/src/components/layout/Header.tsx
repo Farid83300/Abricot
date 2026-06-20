@@ -47,8 +47,7 @@ export default function Header({ user }: Props) {
           alt="Abricot"
           width={150}
           height={20}
-          style={{ width: "110px", height: "auto" }}
-          className="sm:w-32.5 lg:w-37.5"
+          className="h-auto w-27.5 sm:w-32.5 lg:w-47.5"
           priority
         />
       </Link>

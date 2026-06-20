@@ -10,7 +10,7 @@ interface Props {
 
 export default function TaskKanbanCard({ task, projectNames }: Props) {
   return (
-    <div className="rounded-xl border border-border bg-surface p-4">
+    <div className="rounded-xl border border-border bg-surface p-4 py-6">
       <div className="mb-2 flex items-start justify-between gap-2">
         <h3 className="text-sm font-semibold text-ink">{task.title}</h3>
         <div className="shrink-0">
@@ -72,12 +72,14 @@ export default function TaskKanbanCard({ task, projectNames }: Props) {
           {task.comments?.length ?? 0}
         </span>
       </div>
-      <Link
-        href={`/projects/${task.projectId}`}
-        className="block w-full rounded-lg bg-ink px-3 py-2 text-center text-xs font-semibold text-white hover:opacity-90"
-      >
-        Voir
-      </Link>
+      <div className="mt-10 flex justify-start">
+        <Link
+          href={`/projects/${task.projectId}`}
+          className="w-1/2 rounded-lg bg-ink px-3 py-4 text-center text-xs font-semibold text-white hover:opacity-90"
+        >
+          Voir
+        </Link>
+      </div>
     </div>
   );
 }
