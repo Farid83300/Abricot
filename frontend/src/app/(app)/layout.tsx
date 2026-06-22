@@ -24,6 +24,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
+  // Évite un flash du layout le temps que router.replace prenne effet
   if (!user) {
     return null;
   }

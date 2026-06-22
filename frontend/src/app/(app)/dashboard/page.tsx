@@ -30,6 +30,7 @@ export default function DashboardPage() {
           ? projectsResult.projects
           : [];
 
+        // Dictionnaire id → nom pour résoudre le nom de projet dans chaque TaskCard sans appel API supplémentaire
         const names: Record<string, string> = {};
         projectArray.forEach((p) => {
           names[p.id] = p.name;

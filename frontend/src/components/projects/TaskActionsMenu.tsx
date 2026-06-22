@@ -11,6 +11,7 @@ export default function TaskActionsMenu({ onEdit, onDelete }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  // L'écouteur n'est attaché que quand le menu est ouvert pour éviter un listener permanent
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {

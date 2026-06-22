@@ -32,6 +32,7 @@ export default function ProjectTaskList({
   onTasksChanged,
 }: Props) {
   const [view, setView] = useState<ViewMode>("list");
+  // null = modal fermée ; Task = modal d'édition ouverte sur cette tâche
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   const filteredTasks = tasks
@@ -133,6 +134,7 @@ export default function ProjectTaskList({
         </div>
       </div>
 
+      {/* La vue calendrier n'est pas encore implémentée */}
       {view === "calendar" ? (
         <p className="py-12 text-center text-sm text-text-secondary">
           Vue calendrier à venir.

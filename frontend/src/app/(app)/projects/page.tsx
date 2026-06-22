@@ -23,8 +23,8 @@ export default function ProjectsPage() {
         const projectsWithTasks = await Promise.all(
           baseProjects.map(async (project) => {
             try {
-              const tasks = await getProjectTasks(project.id);
-              return { ...project, tasks: Array.isArray(tasks) ? tasks : [] };
+              const result = await getProjectTasks(project.id);
+              return { ...project, tasks: Array.isArray(result.tasks) ? result.tasks : [] };
             } catch {
               return { ...project, tasks: [] };
             }

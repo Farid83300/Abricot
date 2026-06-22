@@ -69,6 +69,7 @@ export default function ProjectPage() {
     }));
   }
 
+  // Flux IA en deux temps : saisie (CreateTaskAIModal) → révision (ReviewAITasksModal)
   function handleAIGenerate(description: string) {
     setAiDrafts(generateDraftTasks(description));
     setIsAICreateOpen(false);

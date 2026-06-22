@@ -6,6 +6,7 @@ interface Props {
   projectNames: Record<string, string>;
 }
 
+// CANCELLED est volontairement absent : les tâches annulées ne figurent pas dans le kanban
 const COLUMNS: { status: TaskStatus; label: string }[] = [
   { status: "TODO", label: "À faire" },
   { status: "IN_PROGRESS", label: "En cours" },

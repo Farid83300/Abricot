@@ -68,7 +68,7 @@ export default function ProjectCard({ project }: Props) {
             {getInitials(project.owner.name)} Propriétaire
           </span>
         )}
-        {/* Contributeurs */}
+        {/* Contributeurs — max 2 affichés pour garder la carte compacte */}
         {project.members?.slice(0, 2).map((m) => (
           <span
             key={m.id}

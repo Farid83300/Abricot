@@ -33,6 +33,7 @@ export default function ReviewAITasksModal({
   onConfirm,
   onAddMore,
 }: Props) {
+  // null = aucune carte en édition ; id d'un draft = cette carte affiche des inputs inline
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newDescription, setNewDescription] = useState("");
 
