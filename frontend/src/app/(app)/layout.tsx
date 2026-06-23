@@ -32,7 +32,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <Header user={user} />
-      <main className="flex-1 px-4 py-6 sm:px-37.5 sm:py-8">{children}</main>
+      <main className="flex-1 px-4 py-6 sm:px-8 md:px-16 lg:px-37.5 lg:py-8">
+        {children}
+      </main>
       <Footer />
     </div>
   );

@@ -27,8 +27,12 @@ import type {
   UpdateProfileResponse,
 } from "@/types/api";
 
+// ============================================================
+// Configuration
 // Vide en dev : les requêtes passent par le proxy Next.js (next.config.ts)
 // pour éviter le CORS avec le backend sur le port 8000.
+// // ============================================================
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 const TOKEN_COOKIE_NAME = "abricot_token";
 
@@ -62,18 +66,18 @@ export function clearToken(): void {
 
 export class ApiError extends Error {
   details?: { field: string; message: string }[];
-  constructor(
-    message: string,
-    details?: { field: string; message: string }[],
-  ) {
+  constructor(message: string, details?: { field: string; message: string }[]) {
     super(message);
     this.name = "ApiError";
     this.details = details;
   }
 }
 
+// ============================================================
 // Wrapper fetch central : injecte le token, déballe l'enveloppe
 // { success, data }, et transforme les échecs en ApiError.
+// ============================================================
+
 async function apiFetch<T>(
   endpoint: string,
   options: RequestInit = {},
@@ -96,7 +100,7 @@ async function apiFetch<T>(
 }
 
 // ============================================================
-// Auth
+// Authentification
 // ============================================================
 
 export function register(payload: RegisterPayload) {
@@ -199,10 +203,10 @@ export function removeContributor(projectId: string, userId: string) {
 
 // ============================================================
 // Tâches
-// ============================================================
-
 // Le statut n'est volontairement pas accepté ici : l'API force toujours
 // TODO à la création, quel que soit le payload envoyé.
+// ============================================================
+
 export function createTask(projectId: string, payload: CreateTaskPayload) {
   return apiFetch<CreateTaskResponse>(`/api/projects/${projectId}/tasks`, {
     method: "POST",

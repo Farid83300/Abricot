@@ -13,9 +13,8 @@ export default function NotFound() {
       {user && <Header user={user} />}
 
       <main className="flex flex-1 flex-col items-center justify-center px-4 text-center">
-
         <p className="mb-2 text-2xl font-bold text-primary sm:text-5xl">
-        Erreur 404
+          Erreur 404
         </p>
         <h1 className="mb-3 text-3xl font-semibold text-ink sm:text-2xl">
           Page introuvable

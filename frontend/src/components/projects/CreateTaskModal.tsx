@@ -305,8 +305,8 @@ export default function CreateTaskModal({
               ))}
             </div>
             <p className="mt-1 text-xs text-text-secondary">
-              Les nouvelles tâches démarrent toujours &#34;À faire&#34;. Tu
-              pourras changer le statut après création.
+              Les nouvelles tâches démarrent toujours &#34;À faire&#34;. Change
+              le statut après création.
             </p>
           </div>
 

@@ -17,7 +17,7 @@ export default function TaskListView({ tasks, projectNames }: Props) {
   );
 
   return (
-    <div className="rounded-xl border border-border bg-surface p-4 sm:mx-7.5 sm:p-6">
+    <div className="rounded-xl border border-border bg-surface p-4 sm:p-6">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="font-semibold text-ink">Mes tâches assignées</h2>

@@ -62,9 +62,7 @@ export default function Header({ user }: Props) {
             width={16}
             height={16}
             style={{ width: "16px", height: "16px" }}
-            className={
-              isDashboard ? "brightness-0 invert" : ""
-            }
+            className={isDashboard ? "brightness-0 invert" : ""}
           />
           Tableau de bord
         </Link>
@@ -88,9 +86,7 @@ export default function Header({ user }: Props) {
           href="/account"
           onClick={() => setIsMenuOpen(false)}
           className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-semibold sm:h-12 sm:w-12 sm:text-sm lg:h-15 lg:w-15 ${
-            isAccount
-              ? "bg-primary-hover text-white"
-              : "bg-avatar text-ink"
+            isAccount ? "bg-primary-hover text-white" : "bg-avatar text-ink"
           }`}
         >
           {initials}

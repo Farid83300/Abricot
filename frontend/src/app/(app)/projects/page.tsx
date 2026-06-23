@@ -24,7 +24,10 @@ export default function ProjectsPage() {
           baseProjects.map(async (project) => {
             try {
               const result = await getProjectTasks(project.id);
-              return { ...project, tasks: Array.isArray(result.tasks) ? result.tasks : [] };
+              return {
+                ...project,
+                tasks: Array.isArray(result.tasks) ? result.tasks : [],
+              };
             } catch {
               return { ...project, tasks: [] };
             }
@@ -68,7 +71,7 @@ export default function ProjectsPage() {
           Aucun projet pour le moment.
         </p>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

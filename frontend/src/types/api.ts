@@ -1,7 +1,27 @@
+// ============================================================
+// Enums — valeurs exactes attendues par l'API (back fait foi)
+// ============================================================
+
+/** Statut d'une tâche. CANCELLED existe en base mais n'apparaît
+ *  pas dans nos maquettes : on le garde pour rester fidèle à l'API. */
 export type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE" | "CANCELLED";
+
+/** Priorité d'une tâche. Aucun champ dans les modales de création/édition :
+ *  toute tâche créée depuis l'UI aura "MEDIUM" par défaut. */
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+
+/** Rôle d'un membre dans project_members.
+ *  ⚠️ Le propriétaire N'EST PAS dans cette table (voir Project.ownerId) :
+ *  ces deux valeurs ne couvrent donc PAS le rôle "propriétaire". */
 export type ProjectMemberRole = "ADMIN" | "CONTRIBUTOR";
+
+/** Rôle calculé côté FRONT pour la logique de permissions.
+ *  "OWNER" est déduit (user.id === project.ownerId), jamais reçu de l'API. */
 export type ProjectRole = "OWNER" | "ADMIN" | "CONTRIBUTOR" | "NONE";
+
+// ============================================================
+// Entités — miroir des schémas Swagger / Prisma
+// ============================================================
 
 export interface User {
   id: string;
