@@ -32,7 +32,6 @@ export default function ProjectTaskList({
   onTasksChanged,
 }: Props) {
   const [view, setView] = useState<ViewMode>("list");
-  // null = modal fermée ; Task = modal d'édition ouverte sur cette tâche
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   const filteredTasks = tasks
@@ -134,7 +133,6 @@ export default function ProjectTaskList({
         </div>
       </div>
 
-      {/* La vue calendrier n'est pas encore implémentée */}
       {view === "calendar" ? (
         <p className="py-12 text-center text-sm text-text-secondary">
           Vue calendrier à venir.
@@ -160,11 +158,29 @@ export default function ProjectTaskList({
                     <p className="mb-3 text-sm text-text-secondary">
                       {task.description}
                     </p>
-                    <div className="flex flex-col gap-1 text-xs text-text-secondary sm:flex-row sm:items-center sm:gap-4">
+
+                    {/* Échéance + assignés : deux lignes séparées comme sur la maquette */}
+                    <div className="flex flex-col gap-1.5 text-xs text-text-secondary">
                       {task.dueDate && (
-                        <span>Échéance : {formatDate(task.dueDate)}</span>
+                        <span className="flex items-center gap-1">
+                          Échéance :
+                          <svg
+                            className="h-3.5 w-3.5 shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
+                          </svg>
+                          {formatDate(task.dueDate)}
+                        </span>
                       )}
-                      <span>
+                      <span className="mt-2.5">
                         Assigné à :{" "}
                         {task.assignees.map((a) => a.user.name).join(", ")}
                       </span>
