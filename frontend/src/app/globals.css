@@ -28,6 +28,9 @@
 
   /* Rayon de bord standard (cards, inputs, modales) */
   --radius-card: 0.75rem;
+
+  /* Rayon de bord standard (cards, inputs, modales) */
+  --color-avatar: #FFE8D9;
 }
 
 body {

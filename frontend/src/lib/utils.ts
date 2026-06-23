@@ -32,6 +32,7 @@ export function getProjectRole(project: Project, userId: string): ProjectRole {
   return member.role;
 }
 
+// Calcule la progression d'un utilisateur sur une tâche
 export function calculateProgress(tasks: Task[]): {
   percent: number;
   done: number;

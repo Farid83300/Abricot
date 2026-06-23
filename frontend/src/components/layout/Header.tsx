@@ -26,6 +26,7 @@ export default function Header({ user }: Props) {
 
   const isDashboard = pathname === "/dashboard";
   const isProjects = pathname.startsWith("/projects");
+  const isAccount = pathname.startsWith("/account");
 
   // Ferme le menu mobile quand on change de page (pendant le rendu, pas dans un effet)
   if (pathname !== prevPathname) {
@@ -62,7 +63,7 @@ export default function Header({ user }: Props) {
             height={16}
             style={{ width: "16px", height: "16px" }}
             className={
-              isDashboard ? "brightness-0 invert" : "opacity-50 brightness-0"
+              isDashboard ? "brightness-0 invert" : ""
             }
           />
           Tableau de bord
@@ -86,7 +87,11 @@ export default function Header({ user }: Props) {
         <Link
           href="/account"
           onClick={() => setIsMenuOpen(false)}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-hover text-xs font-semibold text-white sm:h-12 sm:w-12 sm:text-sm lg:h-15 lg:w-15"
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-semibold sm:h-12 sm:w-12 sm:text-sm lg:h-15 lg:w-15 ${
+            isAccount
+              ? "bg-primary-hover text-white"
+              : "bg-avatar text-ink"
+          }`}
         >
           {initials}
         </Link>
