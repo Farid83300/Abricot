@@ -90,7 +90,7 @@ export default function ProjectHeader({
           >
             <Image
               src="/ai-star.svg"
-              alt=""
+              alt="icon étoile ia"
               width={16}
               height={16}
               style={{ width: "16px", height: "16px" }}

@@ -58,7 +58,7 @@ export default function Header({ user }: Props) {
         <Link href="/dashboard" className={navLinkClasses(isDashboard)}>
           <Image
             src="/dashboard-header.svg"
-            alt=""
+            alt="icon tableau de bord"
             width={16}
             height={16}
             style={{ width: "16px", height: "16px" }}
@@ -70,7 +70,7 @@ export default function Header({ user }: Props) {
         <Link href="/projects" className={navLinkClasses(isProjects)}>
           <Image
             src="/projects-header.svg"
-            alt=""
+            alt="icon projets"
             width={18}
             height={14}
             style={{ width: "18px", height: "auto" }}
@@ -130,7 +130,7 @@ export default function Header({ user }: Props) {
           <Link href="/dashboard" className={navLinkClasses(isDashboard)}>
             <Image
               src="/dashboard-header.svg"
-              alt=""
+              alt="icon tableau de bord"
               width={16}
               height={16}
               style={{ width: "16px", height: "16px" }}
@@ -144,7 +144,7 @@ export default function Header({ user }: Props) {
           <Link href="/projects" className={navLinkClasses(isProjects)}>
             <Image
               src="/projects-header.svg"
-              alt=""
+              alt="icon projets"
               width={18}
               height={14}
               style={{ width: "18px", height: "auto" }}
