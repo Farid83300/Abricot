@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 import { createTask, getProject, getProjectTasks } from "@/lib/api";
+import { getProjectRole } from "@/lib/utils";
 import ProjectHeader from "@/components/projects/ProjectHeader";
 import ProjectTaskList, {
   type StatusFilter,
@@ -13,11 +15,12 @@ import CreateTaskAIModal from "@/components/projects/CreateTaskAIModal";
 import ReviewAITasksModal, {
   type DraftTask,
 } from "@/components/projects/ReviewAITasksModal";
-import type { Project, Task } from "@/types/api";
+import type { Project, ProjectRole, Task } from "@/types/api";
 
 export default function ProjectPage() {
   const params = useParams();
   const id = params.id as string;
+  const { user } = useAuth();
 
   const [project, setProject] = useState<Project | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -129,10 +132,18 @@ export default function ProjectPage() {
     );
   }
 
+  // Calcule le rôle de l'utilisateur connecté sur ce projet
+  // OWNER = ownerId correspond à user.id (hors table project_members)
+  // ADMIN / CONTRIBUTOR = via la table project_members
+  const userRole: ProjectRole = user
+    ? getProjectRole(project, user.id)
+    : "NONE";
+
   return (
     <div>
       <ProjectHeader
         project={project}
+        userRole={userRole}
         onCreateTask={() => setIsCreateTaskModalOpen(true)}
         onEdit={() => setIsEditModalOpen(true)}
         onOpenAI={() => setIsAICreateOpen(true)}
