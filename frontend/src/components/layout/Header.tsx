@@ -36,7 +36,7 @@ export default function Header({ user }: Props) {
 
   const navLinkClasses = (isActive: boolean) =>
     `flex h-12 w-full items-center justify-center gap-2 rounded-xl px-4 text-sm font-medium transition-colors lg:h-19.5 lg:w-62 ${
-      isActive ? "bg-ink text-white" : "text-text-secondary hover:text-ink"
+      isActive ? "bg-ink text-white" : "text-primary hover:text-ink"
     }`;
 
   return (
@@ -59,9 +59,9 @@ export default function Header({ user }: Props) {
           <Image
             src="/dashboard-header.svg"
             alt="icon tableau de bord"
-            width={16}
-            height={16}
-            style={{ width: "16px", height: "16px" }}
+            width={20}
+            height={20}
+            style={{ width: "20px", height: "20px" }}
             className={isDashboard ? "brightness-0 invert" : ""}
           />
           Tableau de bord
@@ -71,9 +71,9 @@ export default function Header({ user }: Props) {
           <Image
             src="/projects-header.svg"
             alt="icon projets"
-            width={18}
-            height={14}
-            style={{ width: "18px", height: "auto" }}
+            width={22}
+            height={17}
+            style={{ width: "22px", height: "auto" }}
             className={isProjects ? "brightness-0 invert" : ""}
           />
           Projets

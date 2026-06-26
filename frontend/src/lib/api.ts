@@ -27,12 +27,8 @@ import type {
   UpdateProfileResponse,
 } from "@/types/api";
 
-// ============================================================
-// Configuration
 // Vide en dev : les requêtes passent par le proxy Next.js (next.config.ts)
 // pour éviter le CORS avec le backend sur le port 8000.
-// // ============================================================
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 const TOKEN_COOKIE_NAME = "abricot_token";
 
@@ -73,11 +69,8 @@ export class ApiError extends Error {
   }
 }
 
-// ============================================================
 // Wrapper fetch central : injecte le token, déballe l'enveloppe
 // { success, data }, et transforme les échecs en ApiError.
-// ============================================================
-
 async function apiFetch<T>(
   endpoint: string,
   options: RequestInit = {},
@@ -181,6 +174,13 @@ export function updateProject(
   return apiFetch<UpdateProjectResponse>(`/api/projects/${projectId}`, {
     method: "PUT",
     body: JSON.stringify(payload),
+  });
+}
+
+// Réservé au OWNER — le backend vérifie les permissions
+export function deleteProject(projectId: string) {
+  return apiFetch<void>(`/api/projects/${projectId}`, {
+    method: "DELETE",
   });
 }
 

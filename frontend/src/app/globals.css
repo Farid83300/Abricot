@@ -13,18 +13,18 @@
 
   /* Texte */
   --color-text-primary: #0f0f0f;
-  --color-text-secondary: #0F0F0F;
+  --color-text-secondary: #0f0f0f;
   --color-text-placeholder: #9ca3af;
 
   /* Pills de statut de tâche (À faire / En cours / Terminée) */
   --color-status-todo-bg: #fde2e1;
-  --color-status-todo-text: #a32a25; 
+  --color-status-todo-text: #a32a25;
 
   --color-status-progress-bg: #ffe8d9;
-  --color-status-progress-text: #D3590B; 
+  --color-status-progress-text: #d3590b;
 
   --color-status-done-bg: #d8f3df;
-  --color-status-done-text: #1f7a3d; 
+  --color-status-done-text: #1f7a3d;
 
   /* Rayon de bord standard (cards, inputs, modales) */
   --radius-card: 0.75rem;

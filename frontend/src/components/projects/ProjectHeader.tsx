@@ -17,6 +17,7 @@ interface Props {
   onCreateTask: () => void;
   onEdit: () => void;
   onOpenAI: () => void;
+  onDelete: () => void;
 }
 
 export default function ProjectHeader({
@@ -25,11 +26,14 @@ export default function ProjectHeader({
   onCreateTask,
   onEdit,
   onOpenAI,
+  onDelete,
 }: Props) {
   const memberCount = (project.members?.length ?? 0) + 1;
 
   // OWNER et ADMIN peuvent modifier le projet et gérer les contributeurs
   const canEdit = userRole === "OWNER" || userRole === "ADMIN";
+  // Seul le OWNER peut supprimer le projet
+  const canDelete = userRole === "OWNER";
 
   return (
     <div>
@@ -67,6 +71,16 @@ export default function ProjectHeader({
                   className="text-sm font-medium text-primary hover:underline"
                 >
                   Modifier
+                </button>
+              )}
+              {/* Bouton Supprimer — visible uniquement pour le OWNER */}
+              {canDelete && (
+                <button
+                  type="button"
+                  onClick={onDelete}
+                  className="text-sm font-medium text-primary hover:underline"
+                >
+                  Supprimer
                 </button>
               )}
             </div>
@@ -108,14 +122,14 @@ export default function ProjectHeader({
         </span>
         <div className="flex flex-wrap items-center gap-2">
           {project.owner && (
-            <span className="whitespace-nowrap rounded-full bg-status-progress-bg px-3 py-1 text-xs font-medium text-status-progress-text">
+            <span className="rounded-full bg-status-progress-bg px-3 py-1 text-xs font-medium whitespace-nowrap text-status-progress-text">
               {getInitials(project.owner.name)} Propriétaire
             </span>
           )}
           {project.members?.map((m) => (
             <span
               key={m.id}
-              className="whitespace-nowrap rounded-full bg-border px-3 py-1 text-xs font-medium text-text-secondary"
+              className="rounded-full bg-border px-3 py-1 text-xs font-medium whitespace-nowrap text-text-secondary"
             >
               {getInitials(m.user.name)} {m.user.name}
             </span>

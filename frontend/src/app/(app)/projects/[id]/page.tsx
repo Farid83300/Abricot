@@ -1,9 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
-import { createTask, getProject, getProjectTasks } from "@/lib/api";
+import {
+  ApiError,
+  createTask,
+  deleteProject,
+  getProject,
+  getProjectTasks,
+} from "@/lib/api";
 import { getProjectRole } from "@/lib/utils";
 import ProjectHeader from "@/components/projects/ProjectHeader";
 import ProjectTaskList, {
@@ -21,10 +28,12 @@ export default function ProjectPage() {
   const params = useParams();
   const id = params.id as string;
   const { user } = useAuth();
+  const router = useRouter();
 
   const [project, setProject] = useState<Project | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [accessError, setAccessError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -38,12 +47,23 @@ export default function ProjectPage() {
 
   function loadData() {
     setIsLoading(true);
+    setAccessError(null);
     Promise.all([getProject(id), getProjectTasks(id)])
       .then(([projectResult, tasksResult]) => {
         setProject(projectResult.project);
         setTasks(Array.isArray(tasksResult.tasks) ? tasksResult.tasks : []);
       })
-      .catch(console.error)
+      .catch((err) => {
+        // Distingue "accès refusé" (non membre) de "projet introuvable"
+        if (
+          err instanceof ApiError &&
+          err.message.toLowerCase().includes("accès")
+        ) {
+          setAccessError("Vous n'avez pas accès à ce projet.");
+        } else {
+          setAccessError("Projet introuvable.");
+        }
+      })
       .finally(() => setIsLoading(false));
   }
 
@@ -116,11 +136,43 @@ export default function ProjectPage() {
     }
   }
 
+  // Suppression du projet — réservée au OWNER (vérifiée aussi côté backend)
+  async function handleDelete() {
+    if (
+      !confirm(
+        `Supprimer le projet "${project?.name}" ? Cette action est irréversible.`,
+      )
+    )
+      return;
+
+    try {
+      await deleteProject(id);
+      router.push("/projects");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   if (isLoading) {
     return (
       <p className="py-12 text-center text-sm text-text-secondary">
         Chargement...
       </p>
+    );
+  }
+
+  // Accès refusé ou projet introuvable — message explicite + lien de retour
+  if (accessError) {
+    return (
+      <div className="py-12 text-center">
+        <p className="mb-4 text-sm text-status-todo-text">{accessError}</p>
+        <Link
+          href="/projects"
+          className="text-sm font-medium text-primary hover:underline"
+        >
+          Retour à mes projets
+        </Link>
+      </div>
     );
   }
 
@@ -147,6 +199,7 @@ export default function ProjectPage() {
         onCreateTask={() => setIsCreateTaskModalOpen(true)}
         onEdit={() => setIsEditModalOpen(true)}
         onOpenAI={() => setIsAICreateOpen(true)}
+        onDelete={handleDelete}
       />
 
       <ProjectTaskList
