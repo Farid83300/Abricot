@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { createComment } from "@/lib/api";
 import type { Comment } from "@/types/api";
 
@@ -33,6 +34,7 @@ export default function TaskCommentsSection({
   taskId,
   initialComments,
 }: Props) {
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [newComment, setNewComment] = useState("");
@@ -98,11 +100,10 @@ export default function TaskCommentsSection({
             </div>
           ))}
 
-          {/* Zone d'ajout */}
+          {/* Zone d'ajout — avatar de l'utilisateur connecté */}
           <div className="flex gap-3">
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-white">
-              {/* Initiales de l'utilisateur connecté — à passer en prop si besoin */}
-              ··
+              {user?.name ? getInitials(user.name) : "?"}
             </span>
             <div className="flex-1">
               <textarea
