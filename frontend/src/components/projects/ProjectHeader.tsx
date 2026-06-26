@@ -121,17 +121,27 @@ export default function ProjectHeader({
           Contributeurs {memberCount} personne{memberCount > 1 ? "s" : ""}
         </span>
         <div className="flex flex-wrap items-center gap-2">
+          {/* Propriétaire — bulle initiales + bulle "Propriétaire" séparées */}
           {project.owner && (
-            <span className="rounded-full bg-status-progress-bg px-3 py-1 text-xs font-medium whitespace-nowrap text-status-progress-text">
-              {getInitials(project.owner.name)} Propriétaire
+            <span className="flex items-center gap-1">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-status-progress-bg text-xs text-status-progress-text">
+                {getInitials(project.owner.name)}
+              </span>
+              <span className="whitespace-nowrap rounded-full bg-status-progress-bg px-2.5 py-0.5 text-xs font-medium text-status-progress-text">
+                Propriétaire
+              </span>
             </span>
           )}
+
+          {/* Membres — bulle initiales + bulle prénom nom séparées */}
           {project.members?.map((m) => (
-            <span
-              key={m.id}
-              className="rounded-full bg-border px-3 py-1 text-xs font-medium whitespace-nowrap text-text-secondary"
-            >
-              {getInitials(m.user.name)} {m.user.name}
+            <span key={m.id} className="flex items-center gap-1">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-border text-xs text-text-secondary">
+                {getInitials(m.user.name)}
+              </span>
+              <span className="whitespace-nowrap rounded-full bg-border px-2.5 py-0.5 text-xs font-medium text-text-secondary">
+                {m.user.name}
+              </span>
             </span>
           ))}
         </div>

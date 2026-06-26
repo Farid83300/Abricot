@@ -22,6 +22,15 @@ interface Props {
   onTasksChanged: () => void;
 }
 
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .map((p) => p[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
+
 export default function ProjectTaskList({
   projectId,
   tasks,
@@ -159,7 +168,6 @@ export default function ProjectTaskList({
                       {task.description}
                     </p>
 
-                    {/* Échéance + assignés : deux lignes séparées comme sur la maquette */}
                     <div className="flex flex-col gap-1.5 text-xs text-text-secondary">
                       {task.dueDate && (
                         <span className="flex items-center gap-1">
@@ -180,10 +188,27 @@ export default function ProjectTaskList({
                           {formatDate(task.dueDate)}
                         </span>
                       )}
-                      <span className="mt-2.5">
-                        Assigné à :{" "}
-                        {task.assignees.map((a) => a.user.name).join(", ")}
-                      </span>
+
+                      {/* Assignés — bulle initiales séparée de la bulle prénom nom */}
+                      <div className="mt-1 flex flex-wrap items-center gap-2">
+                        <span>Assigné à :</span>
+                        {task.assignees.length > 0 ? (
+                          task.assignees.map((a) => (
+                            <span key={a.user.id} className="flex items-center gap-1">
+                              {/* Bulle initiales */}
+                              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-border text-xs text-text-secondary">
+                                {getInitials(a.user.name)}
+                              </span>
+                              {/* Bulle prénom nom */}
+                              <span className="rounded-full bg-border px-2.5 py-0.5 text-xs text-text-secondary">
+                                {a.user.name}
+                              </span>
+                            </span>
+                          ))
+                        ) : (
+                          <span>Non assigné</span>
+                        )}
+                      </div>
                     </div>
                   </div>
 
