@@ -24,7 +24,11 @@ export default function TaskListView({ tasks, projectNames }: Props) {
           <p className="text-sm text-text-secondary">Par ordre de priorité</p>
         </div>
         <div className="relative">
+          <label htmlFor="search-task-dashboard" className="sr-only">
+            Rechercher une tâche
+          </label>
           <input
+            id="search-task-dashboard"
             type="text"
             placeholder="Rechercher une tâche"
             value={search}
@@ -36,6 +40,7 @@ export default function TaskListView({ tasks, projectNames }: Props) {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"

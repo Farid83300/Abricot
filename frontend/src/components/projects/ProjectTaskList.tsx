@@ -81,6 +81,7 @@ export default function ProjectTaskList({
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -105,6 +106,7 @@ export default function ProjectTaskList({
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -117,7 +119,11 @@ export default function ProjectTaskList({
             </button>
           </div>
 
+          <label htmlFor="status-filter" className="sr-only">
+            Filtrer par statut
+          </label>
           <select
+            id="status-filter"
             value={statusFilter}
             onChange={(e) =>
               onStatusFilterChange(e.target.value as StatusFilter)
@@ -133,7 +139,11 @@ export default function ProjectTaskList({
           </select>
 
           <div className="relative w-full sm:w-56">
+            <label htmlFor="search-task-project" className="sr-only">
+              Rechercher une tâche
+            </label>
             <input
+              id="search-task-project"
               type="text"
               placeholder="Rechercher une tâche"
               value={search}
@@ -145,6 +155,7 @@ export default function ProjectTaskList({
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -192,6 +203,7 @@ export default function ProjectTaskList({
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
+                            aria-hidden="true"
                           >
                             <path
                               strokeLinecap="round"
@@ -209,7 +221,10 @@ export default function ProjectTaskList({
                         <span>Assigné à :</span>
                         {task.assignees.length > 0 ? (
                           task.assignees.map((a) => (
-                            <span key={a.user.id} className="flex items-center gap-1">
+                            <span
+                              key={a.user.id}
+                              className="flex items-center gap-1"
+                            >
                               {/* Bulle initiales */}
                               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-border text-xs text-text-secondary">
                                 {getInitials(a.user.name)}
