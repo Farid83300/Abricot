@@ -40,88 +40,90 @@ export default function Header({ user }: Props) {
     }`;
 
   return (
-    <header className="relative flex h-16 items-center justify-between border-b border-border bg-surface px-4 sm:px-6 lg:h-23.5 lg:px-37.5">
-      {/* Logo */}
-      <Link href="/dashboard" onClick={() => setIsMenuOpen(false)}>
-        <Image
-          src="/logo.svg"
-          alt="Abricot"
-          width={150}
-          height={20}
-          className="h-auto w-27.5 sm:w-32.5 lg:w-47.5"
-          priority
-        />
-      </Link>
-
-      {/* Navigation desktop (à partir de 1024px uniquement) */}
-      <nav className="hidden items-center gap-2 lg:flex">
-        <Link href="/dashboard" className={navLinkClasses(isDashboard)}>
+    <header className="relative flex h-16 items-center border-b border-border bg-surface lg:h-23.5">
+      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-37.5">
+        {/* Logo */}
+        <Link href="/dashboard" onClick={() => setIsMenuOpen(false)}>
           <Image
-            src="/dashboard-header.svg"
-            alt="icon tableau de bord"
-            width={20}
+            src="/logo.svg"
+            alt="Abricot"
+            width={150}
             height={20}
-            style={{ width: "20px", height: "20px" }}
-            className={isDashboard ? "brightness-0 invert" : ""}
+            className="h-auto w-27.5 sm:w-32.5 lg:w-47.5"
+            priority
           />
-          Tableau de bord
         </Link>
 
-        <Link href="/projects" className={navLinkClasses(isProjects)}>
-          <Image
-            src="/projects-header.svg"
-            alt="icon projets"
-            width={22}
-            height={17}
-            style={{ width: "22px", height: "auto" }}
-            className={isProjects ? "brightness-0 invert" : ""}
-          />
-          Projets
-        </Link>
-      </nav>
+        {/* Navigation desktop (à partir de 1024px uniquement) */}
+        <nav className="hidden items-center gap-2 lg:flex">
+          <Link href="/dashboard" className={navLinkClasses(isDashboard)}>
+            <Image
+              src="/dashboard-header.svg"
+              alt="icon tableau de bord"
+              width={20}
+              height={20}
+              style={{ width: "20px", height: "20px" }}
+              className={isDashboard ? "brightness-0 invert" : ""}
+            />
+            Tableau de bord
+          </Link>
 
-      {/* Bloc droit : avatar + bouton hamburger (visible jusqu'à 1024px) */}
-      <div className="flex items-center gap-3">
-        <Link
-          href="/account"
-          onClick={() => setIsMenuOpen(false)}
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-semibold sm:h-12 sm:w-12 sm:text-sm lg:h-15 lg:w-15 ${
-            isAccount ? "bg-primary-hover text-white" : "bg-avatar text-ink"
-          }`}
-        >
-          {initials}
-        </Link>
+          <Link href="/projects" className={navLinkClasses(isProjects)}>
+            <Image
+              src="/projects-header.svg"
+              alt="icon projets"
+              width={22}
+              height={17}
+              style={{ width: "22px", height: "auto" }}
+              className={isProjects ? "brightness-0 invert" : ""}
+            />
+            Projets
+          </Link>
+        </nav>
 
-        <button
-          type="button"
-          onClick={() => setIsMenuOpen((open) => !open)}
-          aria-label="Ouvrir le menu de navigation"
-          aria-expanded={isMenuOpen}
-          className="flex h-10 w-10 items-center justify-center rounded-lg text-ink lg:hidden"
-        >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+        {/* Bloc droit : avatar + bouton hamburger (visible jusqu'à 1024px) */}
+        <div className="flex items-center gap-3">
+          <Link
+            href="/account"
+            onClick={() => setIsMenuOpen(false)}
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-semibold sm:h-12 sm:w-12 sm:text-sm lg:h-15 lg:w-15 ${
+              isAccount ? "bg-primary-hover text-white" : "bg-avatar text-ink"
+            }`}
           >
-            {isMenuOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
-        </button>
+            {initials}
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen((open) => !open)}
+            aria-label="Ouvrir le menu de navigation"
+            aria-expanded={isMenuOpen}
+            className="flex h-10 w-10 items-center justify-center rounded-lg text-ink lg:hidden"
+          >
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              {isMenuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Menu déroulant mobile/tablette (jusqu'à 1024px) */}
